@@ -1,0 +1,28 @@
+{
+  "name": "concert-artist-discovery",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node babel-node ./bin/www",
+    "server": "nodemon --exec babel-node app.js"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "dotenv": "^6.2.0",
+    "envalid": "^4.1.4",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "jade": "~1.11.0",
+    "lodash": "^4.17.11",
+    "morgan": "~1.9.0",
+    "string-similarity": "^3.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.2.3"
+  }
+}
