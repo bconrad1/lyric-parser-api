@@ -1,2 +1,2 @@
-export const words = ['the', 'i' , 'a'];
+export const words = ['the', 'i' , 'a', 'a', ''];
 

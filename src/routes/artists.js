@@ -48,7 +48,7 @@ router.get('/songs/:id', (req, res) => {
   initializeEnvVariables();
   let artistId = req.params.id;
   let perPage = 50;
-  let pageNum = req.query.pageNum ? req.query.pageNum : null;
+  let pageNum = req.query.page ? req.query.page : null;
   axios.get(`${url}/artists/${artistId}/songs`,
       {
         headers: {
