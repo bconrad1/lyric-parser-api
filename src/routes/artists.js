@@ -18,6 +18,7 @@ router.get('/', (req, res) => {
 router.get('/search/:artist', (req, res) => {
   initializeEnvVariables();
   let searchTerm = req.params.artist;
+  console.log(searchTerm)
   axios.get(`${url}/search`, {
     headers: {
       Authorization: 'Bearer ' + auth,
@@ -29,7 +30,7 @@ router.get('/search/:artist', (req, res) => {
     let geniusRes = response.data.response;
     let songs = geniusRes.hits;
     let artists = _.map(songs, (song) => {
-      let artistInfo = song.result.primary_artist;
+         let artistInfo = song.result.primary_artist;
       let artistName = artistInfo.name.toLowerCase();
       let stringSimilarityValue = stringSimilarity.compareTwoStrings(artistName,
           searchTerm.toLowerCase());
@@ -40,7 +41,7 @@ router.get('/search/:artist', (req, res) => {
         };
       }
     });
-    res.json(_.uniqBy(artists, 'artistId'));
+    res.json(_.compact(_.uniqBy(artists, 'artistId')));
   }).catch(err => console.log(err));
 });
 

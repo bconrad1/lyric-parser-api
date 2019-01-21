@@ -3,6 +3,7 @@ import axios from 'axios';
 import cheerio from 'cheerio';
 import _ from 'lodash';
 import {words} from '../config/common-words';
+import stringSimilarity from 'string-similarity';
 
 let router = express.Router();
 let url, auth;
@@ -44,12 +45,39 @@ router.get('/', (req, res) => {
   res.status(200).send('ok');
 });
 
+router.get('/search/:songName', (req, res) => {
+  initializeEnvVariables();
+  let songName = req.params.songName;
+  axios.get(`${url}/search`, {
+    headers: {
+      Authorization: 'Bearer ' + auth,
+    },
+    params: {
+      q: songName,
+    },
+  }).then(response => {
+    let geniusRes = response.data.response;
+    let songs = geniusRes.hits;
+    let songList = _.map(songs, (song) => {
+      let songTitle = song.result.title;
+      console.log(songTitle)
+      let stringSimilarityValue = stringSimilarity.compareTwoStrings(songTitle, songName);
+      if (stringSimilarityValue > 0.2) {
+        return {
+          songName: songTitle,
+          url: song.result.url
+        };
+      }
+    });
+    res.json(_.compact(songList));
+  }).catch(err => console.log(err));
+});
+
 router.get('/lyrics/:id', (req, res) => {
   initializeEnvVariables();
   let songId = req.params.id;
   let removeWords = req.query.removeCommonWords;
   let removeCommonWords = removeWords === 'true';
-  console.log(removeCommonWords = true);
   axios.get(`${url}/songs/${songId}`,
       {
         headers: {

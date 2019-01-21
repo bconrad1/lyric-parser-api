@@ -1,5 +1,5 @@
 {
-  "name": "concert-artist-discovery",
+  "name": "lyric-parser-api",
   "version": "0.0.0",
   "private": true,
   "scripts": {
