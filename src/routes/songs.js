@@ -3,7 +3,6 @@ import axios from 'axios';
 import cheerio from 'cheerio';
 import _ from 'lodash';
 import {words} from '../config/common-words';
-import stringSimilarity from 'string-similarity';
 
 let router = express.Router();
 let url, auth;
@@ -24,6 +23,7 @@ function parseHtml(html, removeCommonWords) {
   let lyricCountRemoved = [];
   Object.keys(lyricCount).map((word) => {
     if (removeCommonWords && !words.includes(word.toLowerCase())) {
+
       lyricCountRemoved.push(
           {
             word: word,
@@ -31,6 +31,7 @@ function parseHtml(html, removeCommonWords) {
           });
     }
     if (!removeCommonWords) {
+      console.log('word',word)
       lyricCountRemoved.push(
           {
             word: word,
@@ -60,16 +61,16 @@ router.get('/search/:songName', (req, res) => {
     let songs = geniusRes.hits;
     let songList = _.map(songs, (song) => {
       let songTitle = song.result.title;
-      console.log(songTitle)
-      let stringSimilarityValue = stringSimilarity.compareTwoStrings(songTitle, songName);
-      if (stringSimilarityValue > 0.2) {
+      if (songTitle.toLowerCase().includes(songName.toLowerCase())) {
         return {
           songName: songTitle,
-          url: song.result.url
+          url: song.result.url,
+          fullTitle: song.result.full_title,
+          id: song.result.id
         };
       }
     });
-    res.json(_.compact(songList));
+    res.json({songs:_.compact(songList)});
   }).catch(err => console.log(err));
 });
 

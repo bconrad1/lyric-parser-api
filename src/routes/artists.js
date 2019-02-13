@@ -41,7 +41,7 @@ router.get('/search/:artist', (req, res) => {
         };
       }
     });
-    res.json(_.compact(_.uniqBy(artists, 'artistId')));
+    res.json({artists : _.compact(_.uniqBy(artists, 'artistId'))});
   }).catch(err => console.log(err));
 });
 
